@@ -18,6 +18,11 @@ class GitService{
     }
 
     public function fetch_pull_requests(){
+        try {
+            return GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open']);
+        } catch (\Exception $e) {
+            return ["states"=>false,'message' => $e->getMessage()];
+        }
     }
 
     public function categorize_pull_requests(){
