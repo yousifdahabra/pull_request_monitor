@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use GrahamCampbell\GitHub\GitHubServiceProvider;
 use Illuminate\Http\Request;
+use App\Services\GitService;
 
 class GitController extends Controller{
 
@@ -17,12 +17,13 @@ class GitController extends Controller{
                 "data" => ""
             ], 400);
         }
-        $github_service = new GitHubServiceProvider($repo_url);
+        $github_service = new GitService($repo_url);
+        $result = $github_service->categorize_pull_requests();
 
         return response()->json([
             'status' => true,
             'message' => 'get pull requests done',
-            "data" => ""
+            "data" => $result
         ], 200);
 
     }
