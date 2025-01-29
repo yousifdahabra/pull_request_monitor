@@ -20,6 +20,10 @@ class GitController extends Controller{
         $github_service = new GitService($repo_url);
         $result = $github_service->categorize_pull_requests();
 
+        if(!$result['states']){
+            return response()->json($result, 400);
+        }
+
         return response()->json([
             'status' => true,
             'message' => 'get pull requests done',
