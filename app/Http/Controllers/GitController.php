@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use GrahamCampbell\GitHub\GitHubServiceProvider;
 use Illuminate\Http\Request;
 
 class GitController extends Controller{
@@ -16,6 +17,7 @@ class GitController extends Controller{
                 "data" => ""
             ], 400);
         }
+        $github_service = new GitHubServiceProvider($repo_url);
 
         return response()->json([
             'status' => true,
