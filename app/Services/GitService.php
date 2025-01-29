@@ -8,5 +8,10 @@ class GitService{
 
     }
 
+    private function extract_repo_details($repo_url){
+        $parts = parse_url($repo_url);
+        $path = trim($parts['path'], '/');
+    }
+
 }
 
