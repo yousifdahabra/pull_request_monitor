@@ -54,6 +54,9 @@ class GitService{
             'message' =>"git request successfully"
         ];
     }
+    public function save_pull_requests(){
+
+    }
 
 }
 
