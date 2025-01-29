@@ -45,7 +45,14 @@ class GitService{
                 $review_required_pull_requests[] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
             }
         }
-
+        return [
+            "states"=>true,
+            "data" =>[
+                'old' => $old_pull_requests,
+                'review_required' => $review_required_pull_requests
+            ],
+            'message' =>"git request successfully"
+        ];
     }
 
 }
