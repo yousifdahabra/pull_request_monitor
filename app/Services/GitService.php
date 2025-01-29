@@ -20,7 +20,7 @@ class GitService{
     public function fetch_pull_requests(){
         try {
             $pull_requests = GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open']);
-            return ["states"=>true,"data"=>$pull_requests,'message' =>"you git "]; ;
+            return ["states"=>true,"data"=>$pull_requests,'message' =>"git request successfully"];
         } catch (\Exception $e) {
             return ["states"=>false,"data"=>"","message" => $e->getMessage()];
         }
@@ -36,7 +36,14 @@ class GitService{
         $review_required_pull_requests = [];
 
         foreach ($pull_requests as $pull_request) {
-
+            $created_at = strtotime($pull_request['created_at']);
+            $days = (time() - $created_at) / 86400;
+            if ($days > 30) {
+                $old_pull_requests[] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+            }
+            if (empty($pull_request['requested_reviewers'])) {
+                $review_required_pull_requests[] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+            }
         }
 
     }
