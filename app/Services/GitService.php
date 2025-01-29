@@ -16,6 +16,9 @@ class GitService{
         $path = trim($parts['path'], '/');
         [$this->owner, $this->repo] = explode('/', $path);
     }
+    public function categorize_pull_requests(){
+
+    }
 
 }
 
