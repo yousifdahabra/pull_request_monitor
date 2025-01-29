@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use GrahamCampbell\GitHub\Facades\GitHub;
+
 class GitService{
 
     protected $owner;
