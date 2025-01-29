@@ -22,11 +22,17 @@ class GitService{
             $pull_requests = GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open']);
             return ["states"=>true,"data"=>$pull_requests,'message' =>"you git "]; ;
         } catch (\Exception $e) {
-            return ["states"=>false,"data"=>"",'message' => $e->getMessage()];
+            return ["states"=>false,"data"=>"","message" => $e->getMessage()];
         }
     }
 
     public function categorize_pull_requests(){
+        $pull_requests = $this->fetch_pull_requests();
+
+        if (!$pull_requests['states']) {
+            return $pull_requests;
+        }
+
     }
 
 }
