@@ -19,9 +19,10 @@ class GitService{
 
     public function fetch_pull_requests(){
         try {
-            return GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open']);
+            $pull_requests = GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open']);
+            return ["states"=>true,"data"=>$pull_requests,'message' =>"you git "]; ;
         } catch (\Exception $e) {
-            return ["states"=>false,'message' => $e->getMessage()];
+            return ["states"=>false,"data"=>"",'message' => $e->getMessage()];
         }
     }
 
