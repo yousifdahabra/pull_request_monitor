@@ -32,6 +32,12 @@ class GitService{
         if (!$pull_requests['states']) {
             return $pull_requests;
         }
+        $old_pull_requests = [];
+        $review_required_pull_requests = [];
+
+        foreach ($pull_requests as $pull_request) {
+
+        }
 
     }
 
