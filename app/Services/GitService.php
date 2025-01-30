@@ -35,24 +35,20 @@ class GitService{
             return $pull_requests;
         }
         $pull_requests = $pull_requests['data'];
-        $old_pull_requests = [];
-        $review_required_pull_requests = [];
+        $filter_by = [];
         foreach ($pull_requests as $pull_request) {
             $created_at = strtotime($pull_request['created_at']);
             $days = (time() - $created_at) / 86400;
             if ($days > 2) {
-                $old_pull_requests[] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+                $filter_by['old_pull_requests'][] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
             }
             if (empty($pull_request['requested_reviewers'])) {
-                $review_required_pull_requests[] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+                $filter_by['review_required_pull_requests'][] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
             }
         }
         return [
             "states"=>true,
-            "data" =>[
-                'old' => $old_pull_requests,
-                'review_required' => $review_required_pull_requests
-            ],
+            "data" => $filter_by,
             'message' =>"git request successfully"
         ];
     }
