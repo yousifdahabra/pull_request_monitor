@@ -34,13 +34,13 @@ class GitService{
         if (!$pull_requests['states']) {
             return $pull_requests;
         }
+        $pull_requests = $pull_requests['data'];
         $old_pull_requests = [];
         $review_required_pull_requests = [];
-
         foreach ($pull_requests as $pull_request) {
             $created_at = strtotime($pull_request['created_at']);
             $days = (time() - $created_at) / 86400;
-            if ($days > 30) {
+            if ($days > 2) {
                 $old_pull_requests[] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
             }
             if (empty($pull_request['requested_reviewers'])) {
