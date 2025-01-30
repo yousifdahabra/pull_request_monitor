@@ -41,10 +41,10 @@ return [
     'connections' => [
 
         'main' => [
-            'method'     => 'token',
-            'token'      => 'your-token',
+            'token'  => env('GITHUB_TOKEN', ''),
+            'method' => env('GITHUB_METHOD', 'token'),
+            'cache'  => env('GITHUB_CACHE', true),
             // 'backoff'    => false,
-            // 'cache'      => false,
             // 'version'    => 'v3',
             // 'enterprise' => false,
         ],
