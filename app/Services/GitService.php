@@ -62,6 +62,15 @@ class GitService{
         if (!$categorize_pull_requests['states']) {
             return $categorize_pull_requests;
         }
+        $categorize_pull_requests = $categorize_pull_requests['data'];
+        Storage::put('1-old-pull-requests.txt', implode("\n", $categorize_pull_requests['old']));
+        Storage::put('2-review-required-pull-requests.txt', implode("\n", $categorize_pull_requests['review_required']));
+
+        return [
+            "states"=> true,
+            "data" =>'',
+            'message' =>"Files have been created successfully"
+        ];
 
     }
 
