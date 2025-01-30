@@ -24,11 +24,7 @@ class GitController extends Controller{
             return response()->json($result, 400);
         }
 
-        return response()->json([
-            'status' => true,
-            'message' => 'get pull requests done',
-            "data" => $result
-        ], 200);
+        return response()->json( $result, 200);
 
     }
 }
