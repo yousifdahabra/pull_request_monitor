@@ -57,6 +57,11 @@ class GitService{
         ];
     }
     public function save_pull_requests(){
+        $categorize_pull_requests = $this->categorize_pull_requests();
+
+        if (!$categorize_pull_requests['states']) {
+            return $categorize_pull_requests;
+        }
 
     }
 
