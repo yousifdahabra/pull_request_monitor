@@ -79,7 +79,7 @@ class GitService{
         }
         $categorize_pull_requests = $categorize_pull_requests['data'];
         foreach ($categorize_pull_requests as $key => $value) {
-            // Storage::put( $key.".txt", implode("\n", $value));
+            Storage::put( $key.".txt", implode("\n", $value));
         }
 
         return [
