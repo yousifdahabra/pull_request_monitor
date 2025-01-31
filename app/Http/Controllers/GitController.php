@@ -36,7 +36,21 @@ class GitController extends Controller{
 
         $zip = new ZipArchive;
         if ($zip->open($zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
-         } else {
+
+            $files = [
+                'old_pull_requests.txt',
+                'required_labels.txt',
+                'review_required_pull_requests.txt'
+            ];
+
+            foreach ($files as $file) {
+                $file_path = storage_path("app/private/{$file}");
+
+                $zip->addFile($file_path, $file);
+            }
+
+            $zip->close();
+        } else {
             return response()->json(
                 ["states"=> false,
                 "data" =>'',
