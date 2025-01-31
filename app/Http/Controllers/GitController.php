@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\GitService;
+use ZipArchive;
+use Illuminate\Support\Facades\Storage;
 
 class GitController extends Controller{
 
@@ -27,4 +29,12 @@ class GitController extends Controller{
         return response()->json( $result, 200);
 
     }
+    public function download_files(){
+        $zip_file_name = 'pull_requests.zip';
+        $zip_path = storage_path("app/private/{$zip_file_name}");
+
+
+        return response()->download($zip_path);
+    }
+
 }
