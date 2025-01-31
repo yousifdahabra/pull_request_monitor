@@ -39,8 +39,10 @@ class GitController extends Controller{
 
             $files = [
                 'old_pull_requests.txt',
+                'empty_review_required_pull_requests.txt',
+                'required_review_pull_requests.txt',
                 'required_labels.txt',
-                'review_required_pull_requests.txt'
+                'review_success_pull_requests.txt'
             ];
 
             foreach ($files as $file) {
