@@ -29,10 +29,20 @@ class GitController extends Controller{
         return response()->json( $result, 200);
 
     }
-    public function download_files(){
+    public function download_files()
+    {
         $zip_file_name = 'pull_requests.zip';
         $zip_path = storage_path("app/private/{$zip_file_name}");
 
+        $zip = new ZipArchive;
+        if ($zip->open($zip_path, ZipArchive::CREATE | ZipArchive::OVERWRITE) === TRUE) {
+         } else {
+            return response()->json(
+                ["states"=> false,
+                "data" =>'',
+                'message' =>"could not create zip file"]
+                , 500);
+        }
 
         return response()->download($zip_path);
     }
