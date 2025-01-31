@@ -45,10 +45,14 @@ class GitService{
             if (empty($pull_request['requested_reviewers'])) {
                 $filter_by['review_required_pull_requests'][] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
             }
+            if (empty($pull_request['labels'])) {
+                $filter_by['required_labels'][] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+            }
         }
         return [
             "states"=>true,
             "data" => $filter_by,
+            "days" => $days,
             'message' =>"git request successfully"
         ];
     }
