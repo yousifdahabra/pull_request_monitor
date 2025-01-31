@@ -21,7 +21,7 @@ class GitService{
 
     public function fetch_pull_requests(){
         try {
-            $pull_requests = GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open']);
+            $pull_requests = GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open','per_page' => 100,'page' => 1]);
             return ["states"=>true,"data"=>$pull_requests,'message' =>"git request successfully"];
         } catch (\Exception $e) {
             return ["states"=>false,"data"=>"","message" => $e->getMessage()];
@@ -40,6 +40,7 @@ class GitService{
         foreach ($pull_requests as $pull_request) {
             $created_at = strtotime($pull_request['created_at']);
             $days = floor((time() - $created_at) / 86400);
+
             if ($days > 7) {
                 $filter_by['old_pull_requests'][] = $this->format_pull_request($pull_request);
             }
@@ -57,6 +58,7 @@ class GitService{
             "data" => $filter_by,
             "days" => $days,
             "count" => $count,
+            "pull_requests" => $pull_requests,
             'message' =>"git request successfully"
         ];
     }
