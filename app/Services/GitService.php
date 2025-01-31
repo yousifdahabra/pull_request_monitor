@@ -20,11 +20,22 @@ class GitService{
     }
 
     public function fetch_pull_requests(){
+        $all_pull_requests = [];
+        $is_start = true;
+        $page = 1;
         try {
-            $pull_requests = GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open','per_page' => 100,'page' => 1]);
-            return ["states"=>true,"data"=>$pull_requests,'message' =>"git request successfully"];
+            while($is_start){
+                $pull_requests = GitHub::pullRequest()->all($this->owner, $this->repo, ['state' => 'open','per_page' => 100,'page' => $page]);
+                if(empty($pull_requests) || $page > 1){
+                    $is_start = false;
+                }else{
+                    $all_pull_requests = array_merge($all_pull_requests, $pull_requests);
+                }
+                $page++;
+            }
+            return ["states"=>true,"data"=>$all_pull_requests,'message' =>"git request successfully"];
         } catch (\Exception $e) {
-            return ["states"=>false,"data"=>"","message" => $e->getMessage()];
+            return ["states"=>false,"data"=>$all_pull_requests,"message" => $e->getMessage()];
         }
     }
 
@@ -56,9 +67,7 @@ class GitService{
         return [
             "states"=>true,
             "data" => $filter_by,
-            "days" => $days,
             "count" => $count,
-            "pull_requests" => $pull_requests,
             'message' =>"git request successfully"
         ];
     }
