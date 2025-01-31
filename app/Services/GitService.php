@@ -36,12 +36,14 @@ class GitService{
         }
         $pull_requests = $pull_requests['data'];
         $filter_by = [];
+        $count = Count($pull_requests);
         foreach ($pull_requests as $pull_request) {
             $created_at = strtotime($pull_request['created_at']);
-            $days = (time() - $created_at) / 86400;
-            if ($days > 2) {
+            $days = floor((time() - $created_at) / 86400);
+            if ($days > 7) {
                 $filter_by['old_pull_requests'][] = $this->format_pull_request($pull_request);
             }
+
             if (empty($pull_request['requested_reviewers'])) {
                 $filter_by['review_required_pull_requests'][] = $this->format_pull_request($pull_request);
             }
@@ -54,6 +56,7 @@ class GitService{
             "states"=>true,
             "data" => $filter_by,
             "days" => $days,
+            "count" => $count,
             'message' =>"git request successfully"
         ];
     }
