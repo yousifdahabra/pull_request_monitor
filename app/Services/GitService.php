@@ -47,6 +47,11 @@ class GitService{
             return $pull_requests;
         }
         $pull_requests = $pull_requests['data'];
+
+        if (!is_array($pull_requests) || empty($pull_requests)) {
+            return ["states" => false, "data" => [], "message" => "Unexpected API response"];
+        }
+
         $filter_by = [];
         $count = Count($pull_requests);
         foreach ($pull_requests as $pull_request) {
