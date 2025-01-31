@@ -53,17 +53,26 @@ class GitService{
             $created_at = strtotime($pull_request['created_at']);
             $days = floor((time() - $created_at) / 86400);
 
-            if ($days > 7) {
+            if ($days > 14) {
                 $filter_by['old_pull_requests'][] = $this->format_pull_request($pull_request);
             }
 
             if (empty($pull_request['requested_reviewers'])) {
-                $filter_by['review_required_pull_requests'][] = $this->format_pull_request($pull_request);
+                $filter_by['empty_review_required_pull_requests'][] = $this->format_pull_request($pull_request);
+            }
+
+            if (!empty($pull_request['requested_reviewers'])) {
+                $filter_by['required_review_pull_requests'][] = $this->format_pull_request($pull_request);
             }
 
             if (empty($pull_request['labels'])) {
                 $filter_by['required_labels'][] = $this->format_pull_request($pull_request);
             }
+
+            if ($this->is_review_successful($pull_request)) {
+                $filter_by['review_success_pull_requests'][] = $this->format_pull_request($pull_request);
+            }
+
         }
         return [
             "states"=>true,
@@ -92,6 +101,22 @@ class GitService{
     }
     private function format_pull_request($pull_request){
         return "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+    }
+
+    private function is_review_successful($pull_request){
+        try {
+            $reviews = GitHub::pullRequest()->reviews()->all($this->owner, $this->repo, $pull_request['number']);
+
+            foreach ($reviews as $review) {
+                if ($review['state'] === 'APPROVED') {
+                    return true;
+                }
+            }
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return false;
     }
 
 }
