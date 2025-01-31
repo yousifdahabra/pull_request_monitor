@@ -40,13 +40,14 @@ class GitService{
             $created_at = strtotime($pull_request['created_at']);
             $days = (time() - $created_at) / 86400;
             if ($days > 2) {
-                $filter_by['old_pull_requests'][] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+                $filter_by['old_pull_requests'][] = $this->format_pull_request($pull_request);
             }
             if (empty($pull_request['requested_reviewers'])) {
-                $filter_by['review_required_pull_requests'][] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+                $filter_by['review_required_pull_requests'][] = $this->format_pull_request($pull_request);
             }
+
             if (empty($pull_request['labels'])) {
-                $filter_by['required_labels'][] = "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
+                $filter_by['required_labels'][] = $this->format_pull_request($pull_request);
             }
         }
         return [
@@ -72,6 +73,9 @@ class GitService{
             'message' =>"Files have been created successfully"
         ];
 
+    }
+    private function format_pull_request($pull_request){
+        return "PR #{$pull_request['number']}: {$pull_request['title']} ({$pull_request['html_url']})";
     }
 
 }
