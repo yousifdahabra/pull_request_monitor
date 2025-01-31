@@ -46,7 +46,9 @@ class GitController extends Controller{
             foreach ($files as $file) {
                 $file_path = storage_path("app/private/{$file}");
 
-                $zip->addFile($file_path, $file);
+                if (file_exists($file_path)) {
+                    $zip->addFile($file_path, $file);
+                }
             }
 
             $zip->close();
