@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Services\GitService;
 use ZipArchive;
 use Illuminate\Support\Facades\Storage;
+use Sheets;
 
 class GitController extends Controller{
 
@@ -29,8 +30,8 @@ class GitController extends Controller{
         return response()->json( $result, 200);
 
     }
-    public function download_files()
-    {
+    public function download_files(){
+
         $zip_file_name = 'pull_requests.zip';
         $zip_path = storage_path("app/private/{$zip_file_name}");
 
@@ -62,5 +63,13 @@ class GitController extends Controller{
 
         return response()->download($zip_path);
     }
+    public function test(){
+        $values = Sheets::spreadsheet('1u1r1hF5Kp57yf3hg1IlKw33u4oEIuEjm88MTqW1XZe8')->sheet('Sheet 1')->all();
+        return response()->json(
+            ["states"=> false,
+            "data" =>$values,
+            'message' =>"google"]
+            , 200);
 
+    }
 }
